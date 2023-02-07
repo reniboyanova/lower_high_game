@@ -2,6 +2,7 @@
 # For example 'Richard Branson' vs 'Ilon Musk' ---> type 'higher' if you think the second is richer, or 'lower' if
 # you think the second is poorer
 import random
+from replit import clear
 
 the_compare_names_values = [
     ('ELON MUSK', 219),
@@ -58,6 +59,16 @@ def compare_the_riches_of_persons(person_one, person_two, your_suggestion):
         return True
 
 
+def lose_game_print(numbers_of_true_answers):
+    if numbers_of_true_answers < 5:
+        print("Your result is too low! Try again to brake the game - 😭")
+    elif numbers_of_true_answers < 10:
+        print("Your result is average! So keep trying to do your best next time - 🫡")
+    elif numbers_of_true_answers < 15:
+        print("You result is better than most of the people! Congratulations - 🤗")
+    else:
+        print("Wooow you are amazing! - 🤯🤩")
+
 def current_person_one_name(array):
     return array[0][0]
 
@@ -86,8 +97,14 @@ last_person = ''
 wealth_of_last_person = 0
 
 while not lose_the_game:
+    clear()
     second_compare_person = choose_person_to_compare(the_compare_names_values)
-    list_of_two.append(second_compare_person)
+    # Check if the first compare name in our list of two compare couple is same like the second one. If not exist add the second to the list
+    if list_of_two[0][0].lower() != second_compare_person[0].lower():
+        list_of_two.append(second_compare_person)
+    else:
+        # if the both names are same, continue and return to the beginning of the while woop
+        continue
     current_person_one = list_of_two[0]
     current_person_two = list_of_two[1]
     make_suggestion = input(
@@ -98,6 +115,7 @@ while not lose_the_game:
         list_of_two.pop(0)
 
         numbers_of_correct_answers += 1
+
     else:
         lose_the_game = True
         last_person = current_person_two_name(list_of_two).title()
@@ -108,3 +126,4 @@ if lose_the_game:
     print("You lose, sorry! 😣")
     print(f"The numbers of your correct answers are: {numbers_of_correct_answers}!")
     print(f"You can guess correct that {last_person} have a wealth of ${wealth_of_last_person}B")
+    lose_game_print(numbers_of_correct_answers)
