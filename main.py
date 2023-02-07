@@ -58,39 +58,53 @@ def compare_the_riches_of_persons(person_one, person_two, your_suggestion):
         return True
 
 
-def the_win_statement(array, person_one, person_two, couple_of_compares):
-    couple_of_compares = [person_one[0], person_two[0]]
-    next_person_to_compare = choose_person_to_compare(array)
+def current_person_one_name(array):
+    return array[0][0]
 
-    couple_of_compares.pop(0)
-    couple_of_compares.append(next_person_to_compare[0])
-    return couple_of_compares
+
+def current_person_two_name(array):
+    return array[1][0]
+
+
+def current_person_one_wealth(array):
+    return array[0][1]
+
+
+def current_person_two_wealth(array):
+    return array[1][1]
+
 
 numbers_of_correct_answers = 0
 
-list_of_two = []
-first_compare_person = choose_person_to_compare(the_compare_names_values)
-second_compare_person = choose_person_to_compare(the_compare_names_values)
-the_win_statement(the_compare_names_values, first_compare_person, second_compare_person, list_of_two)
-
-
 lose_the_game = False
-make_suggestion = input(
-    f"If you think that {first_compare_person[0].title()} have more wealth, type 'higher', if not, type 'lower': ")
+
+first_compare_person = choose_person_to_compare(the_compare_names_values)
+
+list_of_two = [first_compare_person, ]
+
+last_person = ''
+wealth_of_last_person = 0
 
 while not lose_the_game:
+    second_compare_person = choose_person_to_compare(the_compare_names_values)
+    list_of_two.append(second_compare_person)
+    current_person_one = list_of_two[0]
+    current_person_two = list_of_two[1]
+    make_suggestion = input(
+        f"Compare {current_person_one_name(list_of_two).title()} with ${current_person_one_wealth(list_of_two)}B and {current_person_two_name(list_of_two).title()} wealth!\nType 'higher' or 'lower' for second name: ")
 
-    if compare_the_riches_of_persons(first_compare_person, second_compare_person, make_suggestion) is True:
-        print("You win!")
-        the_win_statement(the_compare_names_values, first_compare_person, second_compare_person, list_of_two)
-        current_person = the_win_statement(the_compare_names_values, first_compare_person, second_compare_person, list_of_two)
+    if compare_the_riches_of_persons(current_person_one, current_person_two, make_suggestion) is True:
+        print("You made a correct guess! You move on 😉")
+        list_of_two.pop(0)
+
         numbers_of_correct_answers += 1
-        make_suggestion = input(
-            f"If you think that {current_person[0].title()} have more wealth than {current_person[1].title()}, type 'higher', if not, type 'lower': ")
     else:
-        print("You lose, sorry!")
         lose_the_game = True
+        last_person = current_person_two_name(list_of_two).title()
+        wealth_of_last_person = current_person_two_wealth(list_of_two)
         break
 
-
-
+if lose_the_game:
+    print("You lose, sorry! 😣")
+    print(f"The numbers of your correct answers are: {numbers_of_correct_answers}!")
+    print(f"You can guess correct that {last_person} have a wealth of ${wealth_of_last_person}B")
